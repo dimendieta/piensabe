@@ -5,7 +5,7 @@ class Database {
     const connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      database: 'universidadU'
+      database: 'university'
     });
     return connection;
   }

@@ -13,7 +13,7 @@ app.get('/', (req, res)=>{
     res.send('Servidor OK !!!');
 })
 
-app.get('/universidad', (req, res)=>
+app.get('/university', (req, res)=>
 { 
     const db= new Database()
     const cn=db.getConnection()
@@ -26,7 +26,7 @@ app.get('/universidad', (req, res)=>
  
 })
 
-app.post('/universidad', (req, res) => {
+app.post('/university', (req, res) => {
     const body = req.body;
     const db = new Database()
     const cn = db.getConnection()
@@ -51,7 +51,7 @@ app.post('/universidad', (req, res) => {
 })
 
 
-app.post('/universidad', (req, res)=>{
+app.post('/university', (req, res)=>{
     const body = req.body;
     res.json(body)
 })
