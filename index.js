@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
     res.send('Servidor OK !!!');
 })
 
-app.get('/teachers', (req, res) => {
+app.get('/universidadU', (req, res) => {
     const db = new Database()
     const cn = db.getConnection()
     cn.execute(
@@ -40,15 +40,15 @@ app.get('/teachers/:id', (req, res) => {
 })
 
                     //REquest peticion     response  response
-app.post('/teachers', (req, res) => {
+app.post('/universidadU', (req, res) => {
     const body = req.body;
     console.log (body);
     const db = new Database()
     const cn = db.getConnection()
 
     const query = `INSERT INTO PROFESOR     
-                (nombres, apellidos, correo, sexo, estado_civil) VALUES
-                 (?,?,?,?,?)`;
+                (nombres, apellidos, correo, ciudad) VALUES
+                 (?,?,?,?)`;
 
     cn.execute(
         query, [body.nombres, body.apellidos, body.correo, body.sexo, body.estado_civil],
