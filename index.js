@@ -13,12 +13,12 @@ app.get('/', (req, res)=>{
     res.send('Servidor OK !!!');
 })
 
-app.get('/universidadU', (req, res)=>
+app.get('/universidad', (req, res)=>
 { 
     const db= new Database()
     const cn=db.getConnection()
     cn.execute(
-        'SELECT * from profesor ',[],
+        'SELECT * from docente',[],
         function(err, results, fields) {      
           res.json(results)      
         }
@@ -26,16 +26,16 @@ app.get('/universidadU', (req, res)=>
  
 })
 
-app.post('/universidadU', (req, res) => {
+app.post('/universidad', (req, res) => {
     const body = req.body;
     const db = new Database()
     const cn = db.getConnection()
 
-    const query = `INSERT INTO paises 
-                (nombre, apellido, correo,ciudad) values
+    const query = `INSERT INTO docente
+                (id, nombre, direccion,correo) values
                  (?,?,?,?)`
     cn.execute(
-        query, [body.nombre, body.apellido, body.correo, body.ciudad],
+        query, [body.id, body.nombre, body.direccion, body.correo],
         function (err, results, fields) {
             if (err) {
                 res.status(500).json({
@@ -51,7 +51,7 @@ app.post('/universidadU', (req, res) => {
 })
 
 
-app.post('/universidadU', (req, res)=>{
+app.post('/universidad', (req, res)=>{
     const body = req.body;
     res.json(body)
 })
