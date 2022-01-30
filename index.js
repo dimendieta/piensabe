@@ -49,6 +49,28 @@ app.post('/university', (req, res) => {
     );
 
 })
+app.put('/university', (req, res) => {
+    const body = req.body;
+    console.log (body);
+    const db = new Database()
+    const cn = db.getConnection()
+
+    const query = `UPDATE docente     
+                SET id=?, nombre=?, direccion=?, correo=?,` ;
+    cn.execute(
+        query, [body.id, body.nombre, body.direccion, body.correo, ],
+        function (err, results, fields) {
+            if (err) {
+                res.status(500).json({
+                    message: err.message
+                })
+            }
+            else {
+                res.json(body)
+            }
+        }
+    );
+})
 
 
 app.post('/university', (req, res)=>{
