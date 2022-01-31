@@ -42,7 +42,7 @@ app.post('/university', (req, res) => {
 
     const query = `INSERT INTO docente
                 ( nombre, direccion,correo) values
-                 (?,?,?,?)`
+                 (?,?,?)`
     cn.execute(
         query, [body.nombre, body.direccion, body.correo],
         function (err, results, fields) {
@@ -65,9 +65,10 @@ app.put('/university', (req, res) => {
     const cn = db.getConnection()
 
     const query = `UPDATE docente     
-                SET nombre=?, direccion=?, correo=?, WHERE id=?` ;
+                SET nombre=?, direccion=?, correo=?
+                WHERE id=?`;
     cn.execute(
-        query, [body.nombre, body.direccion, body.correo,body.id ],
+        query, [body.nombre, body.direccion, body.correo,body.id],
         function (err, results, fields) {
             if (err) {
                 res.status(500).json({
