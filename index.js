@@ -1,12 +1,9 @@
 const express = require('express');
 const Database = require('./mysqlcon');
 const cors = require('cors')
-
-
 const app = express();
 app.use(cors());
 const port = 3001;
-
 app.use(express.json())
 
 app.get('/', (req, res)=>{
@@ -24,6 +21,18 @@ app.get('/university', (req, res)=>
         }
       );   
  
+})
+app.get('/university/:id', (req, res) => {
+    const { id } = req.params;
+    const db = new Database()
+    const cn = db.getConnection()
+    cn.execute(
+        'SELECT * FROM docente WHERE id = ?', [id],
+        function (err, results, fields) {
+            res.json(results[0])
+        }
+    );
+
 })
 
 app.post('/university', (req, res) => {
