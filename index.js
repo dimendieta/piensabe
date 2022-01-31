@@ -2,8 +2,8 @@ const express = require('express');
 const Database = require('./mysqlcon');
 const cors = require('cors')
 const app = express();
-app.use(cors());
 const port = 3001;
+app.use(cors());
 app.use(express.json())
 
 app.get('/', (req, res)=>{
@@ -41,10 +41,10 @@ app.post('/university', (req, res) => {
     const cn = db.getConnection()
 
     const query = `INSERT INTO docente
-                (id, nombre, direccion,correo) values
+                ( nombre, direccion,correo) values
                  (?,?,?,?)`
     cn.execute(
-        query, [body.id, body.nombre, body.direccion, body.correo],
+        query, [body.nombre, body.direccion, body.correo],
         function (err, results, fields) {
             if (err) {
                 res.status(500).json({
@@ -65,9 +65,9 @@ app.put('/university', (req, res) => {
     const cn = db.getConnection()
 
     const query = `UPDATE docente     
-                SET id=?, nombre=?, direccion=?, correo=?,` ;
+                SET nombre=?, direccion=?, correo=?, WHERE id=?` ;
     cn.execute(
-        query, [body.id, body.nombre, body.direccion, body.correo, ],
+        query, [body.nombre, body.direccion, body.correo,body.id ],
         function (err, results, fields) {
             if (err) {
                 res.status(500).json({
@@ -80,14 +80,7 @@ app.put('/university', (req, res) => {
         }
     );
 })
-
-
-app.post('/university', (req, res)=>{
-    const body = req.body;
-    res.json(body)
-})
-
-
 app.listen(port, () => {
-    console.log('localhost:'+port);
+    console.log('Sevidor Express en: http://localhost:' + port);
 })
+
