@@ -22,19 +22,6 @@ app.get('/university', (req, res)=>
       );   
  
 })
-
-app.get('/university', (req, res)=>
-{ 
-    const db= new Database()
-    const cn=db.getConnection()
-    cn.execute(
-        'SELECT * from usuarios',[],
-        function(err, results, fields) {      
-          res.json(results)      
-        }
-      );   
- 
-})
 app.get('/university/:id', (req, res) => {
     const { id } = req.params;
     const db = new Database()
@@ -70,7 +57,6 @@ app.post('/university', (req, res) => {
         }
     );
 
-})
 app.put('/university', (req, res) => {
     const body = req.body;
     console.log (body);
@@ -94,6 +80,90 @@ app.put('/university', (req, res) => {
         }
     );
 })
+
+app.get('/university', (req, res)=>
+{ 
+    const db= new Database()
+    const cn=db.getConnection()
+    cn.execute(
+        'SELECT * from usuarios',[],
+        function(err, results, fields) {      
+          res.json(results)      
+        }
+      );   
+ 
+})
+
+app.get('/university/:id', (req, res) => {
+    const { id } = req.params;
+    const db = new Database()
+    const cn = db.getConnection()
+    cn.execute(
+        'SELECT * FROM usuarios WHERE id = ?', [id],
+        function (err, results, fields) {
+            res.json(results[0])
+        }
+    );
+
+})
+
+
+})
+
+app.post('/university', (req, res) => {
+    const body = req.body;
+    const db = new Database()
+    const cn = db.getConnection()
+
+    const query = `INSERT INTO usuarios
+                ( username, password,status) values
+                 (?,?,?)`
+    cn.execute(
+        query, [body.username, body.password, body.status],
+        function (err, results, fields) {
+            if (err) {
+                res.status(500).json({
+                    message: err.message
+                })
+            }
+            else {
+                res.json(body)
+            }
+        }
+    );
+
+})
+
+
+app.put('/university', (req, res) => {
+    const body = req.body;
+    console.log (body);
+    const db = new Database()
+    const cn = db.getConnection()
+
+    const query = `UPDATE usuarios    
+                SET username=?, passwrod=?, status=?
+                WHERE id=?`;
+    cn.execute(
+        query, [body.username, body.password, body.status,body.id],
+        function (err, results, fields) {
+            if (err) {
+                res.status(500).json({
+                    message: err.message
+                })
+            }
+            else {
+                res.json(body)
+            }
+        }
+    );
+})
+
+
+
+
+
+
 app.listen(port, () => {
     console.log('Sevidor Express en: http://localhost:' + port);
 })
