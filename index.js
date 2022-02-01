@@ -22,6 +22,19 @@ app.get('/university', (req, res)=>
       );   
  
 })
+
+app.get('/university', (req, res)=>
+{ 
+    const db= new Database()
+    const cn=db.getConnection()
+    cn.execute(
+        'SELECT * from usuarios',[],
+        function(err, results, fields) {      
+          res.json(results)      
+        }
+      );   
+ 
+})
 app.get('/university/:id', (req, res) => {
     const { id } = req.params;
     const db = new Database()
