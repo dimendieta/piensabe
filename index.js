@@ -10,8 +10,37 @@ app.get('/', (req, res)=>{
     res.send('Servidor OK !!!');
 })
 
+app.get('/usuarios', (req, res)=>
+{ 
+  
+    const db= new Database()
+    const cn=db.getConnection()
+    cn.execute(
+        'SELECT * from usuarios',[],
+        function(err, results, fields) {      
+          res.json(results)      
+        }
+      );   
+ 
+})
+
+app.get('/tarea', (req, res)=>
+{ 
+    
+    const db= new Database()
+    const cn=db.getConnection()
+    cn.execute(
+        'SELECT * from tarea',[],
+        function(err, results, fields) {      
+          res.json(results)      
+        }
+      );   
+ 
+})
+
 app.get('/university', (req, res)=>
 { 
+  
     const db= new Database()
     const cn=db.getConnection()
     cn.execute(
@@ -58,6 +87,7 @@ app.post('/university', (req, res) => {
     );
 
 app.put('/university', (req, res) => {
+    console.log('Actualizando')
     const body = req.body;
     console.log (body);
     const db = new Database()
@@ -81,20 +111,68 @@ app.put('/university', (req, res) => {
     );
 })
 
-app.get('/university', (req, res)=>
-{ 
-    const db= new Database()
-    const cn=db.getConnection()
+app.get('/tarea/:id', (req, res) => {
+    const { id } = req.params;
+    const db = new Database()
+    const cn = db.getConnection()
     cn.execute(
-        'SELECT * from usuarios',[],
-        function(err, results, fields) {      
-          res.json(results)      
+        'SELECT * FROM tarea WHERE id = ?', [id],
+        function (err, results, fields) {
+            res.json(results[0])
         }
-      );   
- 
+    );
+
 })
 
-app.get('/university/:id', (req, res) => {
+app.post('/tarea', (req, res) => {
+    const body = req.body;
+    const db = new Database()
+    const cn = db.getConnection()
+
+    const query = `INSERT INTO tarea
+                ( descripcion, dificultad,fecha,docente_id) values
+                 (?,?,?,?)`
+    cn.execute(
+        query, [body.descripcion, body.dificultad, body.fecha,body.docente_id],
+        function (err, results, fields) {
+            if (err) {
+                res.status(500).json({
+                    message: err.message
+                })
+            }
+            else {
+                res.json(body)
+            }
+        }
+    );
+
+})
+app.put('/usuarios', (req, res) => {
+    const body = req.body;
+    console.log (body);
+    const db = new Database()
+    const cn = db.getConnection()
+
+    const query = `UPDATE tarea   
+                SET descripcion=?, dificultad=?, fecha=?, docente_id=?
+                WHERE id=?`;
+    cn.execute(
+        query, [body.descripcion, body.dificultad, body.fecha,body.docente_id,body.id],
+        function (err, results, fields) {
+            if (err) {
+                res.status(500).json({
+                    message: err.message
+                })
+            }
+            else {
+                res.json(body)
+            }
+        }
+    );
+})
+
+
+app.get('/usuarios/:id', (req, res) => {
     const { id } = req.params;
     const db = new Database()
     const cn = db.getConnection()
@@ -110,7 +188,7 @@ app.get('/university/:id', (req, res) => {
 
 })
 
-app.post('/university', (req, res) => {
+app.post('/usuarios', (req, res) => {
     const body = req.body;
     const db = new Database()
     const cn = db.getConnection()
@@ -135,14 +213,14 @@ app.post('/university', (req, res) => {
 })
 
 
-app.put('/university', (req, res) => {
+app.put('/usuarios', (req, res) => {
     const body = req.body;
     console.log (body);
     const db = new Database()
     const cn = db.getConnection()
 
     const query = `UPDATE usuarios    
-                SET username=?, passwrod=?, status=?
+                SET username=?, password=?, status=?
                 WHERE id=?`;
     cn.execute(
         query, [body.username, body.password, body.status,body.id],
