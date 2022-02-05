@@ -123,31 +123,8 @@ app.get('/tarea/:id', (req, res) => {
     );
 
 })
-
-app.post('/tarea', (req, res) => {
-    const body = req.body;
-    const db = new Database()
-    const cn = db.getConnection()
-
-    const query = `INSERT INTO tarea
-                ( descripcion, dificultad,fecha,docente_id) values
-                 (?,?,?,?)`
-    cn.execute(
-        query, [body.descripcion, body.dificultad, body.fecha,body.docente_id],
-        function (err, results, fields) {
-            if (err) {
-                res.status(500).json({
-                    message: err.message
-                })
-            }
-            else {
-                res.json(body)
-            }
-        }
-    );
-
-})
-app.put('/usuarios', (req, res) => {
+app.put('/tarea', (req, res) => {
+    console.log('Editando')
     const body = req.body;
     console.log (body);
     const db = new Database()
@@ -170,6 +147,31 @@ app.put('/usuarios', (req, res) => {
         }
     );
 })
+
+app.post('/tarea', (req, res) => {
+    const body = req.body;
+    const db = new Database()
+    const cn = db.getConnection()
+
+    const query = `INSERT INTO tarea
+                ( descripcion, dificultad,fecha,docente_id) values
+                 (?,?,?,?,)`
+    cn.execute(
+        query, [body.descripcion, body.dificultad, body.fecha,body.docente_id],
+        function (err, results, fields) {
+            if (err) {
+                res.status(500).json({
+                    message: err.message
+                })
+            }
+            else {
+                res.json(body)
+            }
+        }
+    );
+
+})
+
 
 
 app.get('/usuarios/:id', (req, res) => {
